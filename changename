@@ -30,6 +30,9 @@ def parse_arguments():
 
 def rename_file_or_directory(current_name, new_name):
     """Rename file or directory after validating the new name does not exist."""
+    if not os.path.exists(current_name):
+        raise FileNotFoundError(current_name)
+    
     newname_with_path = set_newname_with_path(current_name, new_name)
     validate_if_newname_exists(newname_with_path)
     os.rename(current_name, newname_with_path)
