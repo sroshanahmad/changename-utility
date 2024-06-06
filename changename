@@ -11,7 +11,7 @@ def main():
     """Main function to handle the renaming logic and exceptions."""
     try:
         args = parse_arguments()
-        rename_file_or_directory(args.current_name, args.new_name)
+        rename_entity(args.current_name, args.new_name)
     except FileNotFoundError:
         print(f"Error: No such file or directory: {args.current_name}")
     except SameNameError as error:
@@ -28,16 +28,16 @@ def parse_arguments():
     parser.add_argument('new_name', help='New name of file or directory')
     return parser.parse_args()
 
-def rename_file_or_directory(current_name, new_name):
+def rename_entity(current_name, new_name):
     """Rename file or directory after validating the new name does not exist."""
     if not os.path.exists(current_name):
         raise FileNotFoundError(current_name)
     
-    newname_with_path = set_newname_with_path(current_name, new_name)
+    newname_with_path = construct_new_path(current_name, new_name)
     validate_if_newname_exists(newname_with_path)
     os.rename(current_name, newname_with_path)
 
-def set_newname_with_path(current_name, new_name):
+def construct_new_path(current_name, new_name):
     """Construct new path with the new name."""
     path_of_current_name = os.path.split(current_name)[0]
     newname_with_path = os.path.join(path_of_current_name, new_name)
